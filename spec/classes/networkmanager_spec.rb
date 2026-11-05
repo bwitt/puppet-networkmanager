@@ -53,6 +53,15 @@ describe 'networkmanager' do
               'main' => {
                 'plugins' => 'keyfile',
               },
+              'logging' => {
+                'level' => 'WARN',
+              },
+              'device' => {
+                'wifi.scan-rand-mac-address' => false,
+              },
+              'connectivity' => {
+                'interval' => 300,
+              },
             },
           }
         end
@@ -63,7 +72,22 @@ describe 'networkmanager' do
             mode: '0600',
             owner: 'network',
             group: 'network',
-            content: "# THIS FILE IS CONTROLLED BY PUPPET\n\n[main]\nplugins=\"keyfile\"\n",
+            # NetworkManager does not strip quotes from values.
+            content: <<~INI,
+              # THIS FILE IS CONTROLLED BY PUPPET
+
+              [main]
+              plugins=keyfile
+
+              [logging]
+              level=WARN
+
+              [device]
+              wifi.scan-rand-mac-address=false
+
+              [connectivity]
+              interval=300
+            INI
           )
         end
       end

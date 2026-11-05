@@ -9,7 +9,8 @@ class networkmanager::config {
       mode    => $networkmanager::config_file_mode,
       owner   => $networkmanager::config_file_owner,
       group   => $networkmanager::config_file_group,
-      content => $networkmanager::options.extlib::to_ini,
+      # NetworkManager reads quotes as part of the value.
+      content => $networkmanager::options.extlib::to_ini({ 'quote_char' => '' }),
     }
   }
 }
