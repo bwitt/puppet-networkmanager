@@ -21,7 +21,7 @@ Puppet::ResourceApi.register_type(
 
     This type provides Puppet with the capabilities to manage NetworkManager connections.
   EOS
-  features: ['simple_get_filter'],
+  features: %w[simple_get_filter canonicalize],
   attributes: {
     ensure: {
       type:    'Enum[present, absent]',
@@ -36,8 +36,8 @@ Puppet::ResourceApi.register_type(
     },
 
     type: {
-      type: 'Enum[ethernet, "802-3-ethernet", loopback, wifi, vpn, bridge, bond, vlan]',
-      desc: 'The type of the connection (e.g., ethernet, wifi, vpn).',
+      type: 'Enum[ethernet, "802-3-ethernet", loopback, wifi, "802-11-wireless", vpn, bridge, bond, vlan]',
+      desc: 'The type of the connection (e.g., ethernet, wifi, vpn). The aliases ethernet and wifi are stored as 802-3-ethernet and 802-11-wireless, the names nmcli reports.',
     },
 
     device: {

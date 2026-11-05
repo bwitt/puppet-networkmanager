@@ -367,9 +367,9 @@ Additional static IPv6 routes with optional preferred source addresses. Do not d
 
 ##### `type`
 
-Data type: `Enum[ethernet, "802-3-ethernet", loopback, wifi, vpn, bridge, bond, vlan]`
+Data type: `Enum[ethernet, "802-3-ethernet", loopback, wifi, "802-11-wireless", vpn, bridge, bond, vlan]`
 
-The type of the connection (e.g., ethernet, wifi, vpn).
+The type of the connection (e.g., ethernet, wifi, vpn). The aliases ethernet and wifi are stored as 802-3-ethernet and 802-11-wireless, the names nmcli reports.
 
 #### Parameters
 
@@ -391,4 +391,3 @@ The name of the NetworkManager connection.
 Data type: `Boolean`
 
 Whether to run an immediate runtime reapply on the device after profile changes.
-

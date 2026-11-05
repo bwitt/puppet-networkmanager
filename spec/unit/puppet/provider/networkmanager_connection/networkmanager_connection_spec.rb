@@ -16,6 +16,26 @@ RSpec.describe Puppet::Provider::NetworkmanagerConnection::NetworkmanagerConnect
     allow(context).to receive(:notice)
   end
 
+  describe '#canonicalize' do
+    it 'maps type aliases to the names nmcli reports' do
+      resources = [
+        { name: 'a', type: 'ethernet' },
+        { name: 'b', type: 'wifi' },
+        { name: 'c', type: '802-3-ethernet' },
+        { name: 'd', type: 'bridge' },
+        { name: 'e', ensure: 'absent' },
+      ]
+
+      expect(provider.canonicalize(context, resources)).to eq [
+        { name: 'a', type: '802-3-ethernet' },
+        { name: 'b', type: '802-11-wireless' },
+        { name: 'c', type: '802-3-ethernet' },
+        { name: 'd', type: 'bridge' },
+        { name: 'e', ensure: 'absent' },
+      ]
+    end
+  end
+
   describe '#get' do
     it 'returns all connections when no filter is provided' do
       allow(provider).to receive(:list_connections).and_return(%w[foo bar])

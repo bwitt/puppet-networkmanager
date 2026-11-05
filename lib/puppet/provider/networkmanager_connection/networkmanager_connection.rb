@@ -73,6 +73,27 @@ class Puppet::Provider::NetworkmanagerConnection::NetworkmanagerConnection < Pup
     raise
   end
 
+  # Maps connection type aliases to the names nmcli reports, so that
+  # aliased resources compare equal to the current state.
+  #
+  # @param _context [Puppet::ResourceApi::BaseContext] The context for logging.
+  # @param resources [Array<Hash>] Resources to canonicalize in place.
+  # @return [Array<Hash>] The canonicalized resources.
+  #
+  def canonicalize(_context, resources)
+    resources.each do |resource|
+      type = resource[:type]
+      resource[:type] = TYPE_ALIASES.fetch(type.to_s, type) unless type.nil?
+    end
+  end
+
+  unless const_defined?(:TYPE_ALIASES, false)
+    TYPE_ALIASES = {
+      'ethernet' => '802-3-ethernet',
+      'wifi' => '802-11-wireless',
+    }.freeze
+  end
+
   private
 
   unless const_defined?(:PROPERTY_MAP, false)
